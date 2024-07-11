@@ -143,20 +143,28 @@ export default supabase;
 - **Fetching Data**: In the `App.js` file, we use Supabase to fetch facts from the database based on the selected category.
 
 ```javascript
-useEffect(() => {
-  async function getFacts() {
-    setIsLoading(true);
-    let query = supabase.from('facts').select('*');
-    if (currentCategory !== 'all') {
-      query = query.eq('category', currentCategory);
-    }
-    const { data: facts, error } = await query.order('votesInteresting', { ascending: false }).limit(1000);
-    if (!error) setFacts(facts);
-    else alert('There was a problem getting data');
-    setIsLoading(false);
-  }
-  getFacts();
-}, [currentCategory]);
+useEffect(
+    function () {
+      async function getFacts() {
+        setIsLoading(true);
+
+        let query = supabase.from('facts').select('*');
+
+        if (currentCategory !== 'all')
+          query = query.eq('category', currentCategory);
+
+        const { data: facts, error } = await query
+          .order('votesInteresting', { ascending: false })
+          .limit(1000);
+
+        if (!error) setFacts(facts);
+        else alert('There was a problem getting data');
+        setIsLoading(false);
+      }
+      getFacts();
+    },
+    [currentCategory]
+  );
 ```
 
 - **Submitting Data**: In the `NewFactForm.js` file, we use Supabase to insert new facts into the database.
